@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Startpage — Material</title>
+<style>
+:root{
+  --bg:#fafafa;
+  --surface:#ffffff;
+  --text:#1f2937;
+  --text-weak:#6b7280;
+  --primary:#2563eb;
+  --primary-weak:#dbeafe;
+  --border:#e5e7eb;
+  --radius:16px;
+  --shadow:0 8px 20px rgba(0,0,0,.08);
+  --shadow-strong:0 16px 36px rgba(0,0,0,.12);
+  --focus:2px solid #2563eb;
+  --card-gap:16px;
+  --container:1080px
+}
+html[data-theme="dark"]{
+  --bg:#0b0f19;
+  --surface:#111827;
+  --text:#e5e7eb;
+  --text-weak:#9ca3af;
+  --primary:#60a5fa;
+  --primary-weak:#1e293b;
+  --border:#1f2937;
+  --shadow:0 10px 30px rgba(0,0,0,.45);
+  --shadow-strong:0 18px 48px rgba(0,0,0,.6)
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font:16px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif
+}
+.container{max-width:var(--container);margin:0 auto;padding:24px}
+.nav{
+  position:sticky;top:0;z-index:10;
+  background:rgba(255,255,255,.7);backdrop-filter:saturate(140%) blur(10px);
+  border-bottom:1px solid var(--border)
+}
+html[data-theme="dark"] .nav{background:rgba(17,24,39,.6)}
+.nav-inner{max-width:var(--container);margin:0 auto;padding:12px 24px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.brand{font-weight:800;letter-spacing:-.02em}
+.btn{
+  all:unset;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  padding:10px 14px;border-radius:12px;border:1px solid var(--border);background:var(--surface);
+  transition:transform .15s ease,box-shadow .2s ease,background .2s ease
+}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+.btn:focus-visible{outline:var(--focus)}
+.btn-primary{border-color:transparent;background:var(--primary);color:#fff}
+.btn-primary:hover{box-shadow:var(--shadow-strong)}
+.grid{
+  display:grid;gap:24px;grid-template-columns:1fr
+}
+.card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:20px;transition:transform .15s ease,box-shadow .2s ease,background .2s ease
+}
+.card:hover{transform:translateY(-1px);box-shadow:var(--shadow-strong)}
+.header{display:flex;flex-direction:column;align-items:center;gap:16px;margin:28px 0 8px}
+h1{margin:0;font-size:clamp(1.4rem,3.5vw,2rem);font-weight:800;letter-spacing:-.02em}
+.muted{color:var(--text-weak)}
+.search{
+  display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap
+}
+.input{
+  width:min(720px,100%);padding:14px 16px;border-radius:12px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);font-size:1rem
+}
+.input:focus-visible{outline:var(--focus)}
+.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;border:1px solid var(--border);padding:2px 8px;border-radius:8px;background:var(--primary-weak)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.section-title{font-weight:700;margin-bottom:8px}
+.book-wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--card-gap)}
+@media (max-width:1100px){.book-wrap{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:760px){.book-wrap{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:460px){.book-wrap{grid-template-columns:1fr}}
+.book{
+  display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:14px;border:1px solid var(--border);
+  background:var(--surface);box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .2s ease
+}
+.book:hover{transform:translateY(-1px);box-shadow:var(--shadow-strong)}
+.book-title{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.book-url{font-size:.9rem;color:var(--text-weak);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.book-actions{display:flex;gap:8px;margin-top:4px}
+.small{all:unset;border:1px solid var(--border);padding:6px 10px;border-radius:10px;cursor:pointer;background:var(--surface)}
+.small:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+.footer{margin:26px 0;color:var(--text-weak);text-align:center}
+.modal-wrap{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);z-index:50}
+.modal-wrap.open{display:grid}
+.modal{width:min(560px,92vw)} .modal .row{margin:8px 0}
+.select{padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--text)}
+</style>
+</head>
+<body>
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="brand">Startpage</div>
+      <div class="row">
+        <button class="btn" id="btnSettings">Settings</button>
+        <button class="btn btn-primary" id="btnAdd">Add bookmark</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <header class="header">
+      <h1>Benvenuto</h1>
+      <div class="muted">Premi <span class="kbd">/</span> per cercare</div>
+      <form class="search" id="searchForm">
+        <input id="q" class="input" autocomplete="off" placeholder="Cerca su Google…" aria-label="Search on Google">
+        <button class="btn btn-primary" type="submit">Search</button>
+      </form>
+    </header>
+
+    <section class="card">
+      <div class="section-title">Bookmarks</div>
+      <div id="books" class="book-wrap"></div>
+    </section>
+
+    <div class="footer">© <span id="year"></span> Startpage — Material</div>
+  </div>
+
+  <div class="modal-wrap" id="settings">
+    <div class="modal card">
+      <div class="section-title">Settings</div>
+      <div class="row">
+        <label>Theme</label>
+        <select id="themeSel" class="select">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <option value="auto" selected>Auto (system)</option>
+        </select>
+        <button class="btn" id="closeSettings">Close</button>
+      </div>
+      <div class="muted">Il tema viene salvato nel browser.</div>
+    </div>
+  </div>
+
+  <div class="modal-wrap" id="edit">
+    <div class="modal card">
+      <div class="section-title" id="editTitle">Add bookmark</div>
+      <div class="row">
+        <input id="fTitle" class="input" placeholder="Titolo">
+      </div>
+      <div class="row">
+        <input id="fUrl" class="input" placeholder="https://...">
+      </div>
+      <div class="row">
+        <button class="btn btn-primary" id="saveBook">Save</button>
+        <button class="btn" id="cancelBook">Cancel</button>
+        <button class="btn" id="deleteBook" style="margin-left:auto;display:none">Delete</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const LS_BOOKS="sp_books_v1", LS_THEME="sp_theme";
+let books = load(LS_BOOKS, []) || [];
+let editing=null;
+
+function load(k,def){try{const v=JSON.parse(localStorage.getItem(k));return v??def}catch{return def}}
+function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function uid(){return Math.random().toString(36).slice(2,10)}
+
+function applyTheme(t){
+  const root=document.documentElement;
+  if(t==="auto"){
+    const isDark=window.matchMedia("(prefers-color-scheme: dark)").matches;
+    root.setAttribute("data-theme", isDark?"dark":"light");
+  }else{
+    root.setAttribute("data-theme", t);
+  }
+}
+function initTheme(){
+  const saved=localStorage.getItem(LS_THEME) || "auto";
+  $("#themeSel").value=saved;
+  applyTheme(saved);
+  $("#themeSel").addEventListener("change",()=>{
+    const v=$("#themeSel").value;
+    localStorage.setItem(LS_THEME, v);
+    applyTheme(v);
+  });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{
+    if(($("#themeSel").value||"auto")==="auto") applyTheme("auto");
+  });
+}
+
+function renderBooks(){
+  const wrap=$("#books");
+  wrap.innerHTML="";
+  if(!books.length){
+    books=[ // default demo
+      {id:uid(),title:"Google",url:"https://www.google.com"},
+      {id:uid(),title:"YouTube",url:"https://www.youtube.com"},
+      {id:uid(),title:"Gmail",url:"https://mail.google.com"},
+      {id:uid(),title:"GitHub",url:"https://github.com"},
+      {id:uid(),title:"Wikipedia",url:"https://www.wikipedia.org"}
+    ];
+    save(LS_BOOKS, books);
+  }
+  for(const b of books){
+    const el=document.createElement("div");
+    el.className="book";
+    const t=document.createElement("div"); t.className="book-title"; t.textContent=b.title;
+    const u=document.createElement("div"); u.className="book-url"; u.textContent=b.url;
+    const actions=document.createElement("div"); actions.className="book-actions";
+    const open=document.createElement("button"); open.className="small"; open.textContent="Open";
+    open.onclick=()=>window.open(b.url,"_blank","noopener");
+    const edit=document.createElement("button"); edit.className="small"; edit.textContent="Edit";
+    edit.onclick=()=>openEditor(b.id);
+    actions.append(open,edit);
+    el.append(t,u,actions);
+    wrap.appendChild(el);
+  }
+}
+
+function openEditor(id){
+  editing=id||null;
+  $("#editTitle").textContent = editing ? "Edit bookmark" : "Add bookmark";
+  $("#deleteBook").style.display = editing ? "" : "none";
+  if(editing){
+    const b=books.find(x=>x.id===editing);
+    $("#fTitle").value=b.title; $("#fUrl").value=b.url;
+  }else{
+    $("#fTitle").value=""; $("#fUrl").value="";
+  }
+  $("#edit").classList.add("open");
+}
+function closeEditor(){ $("#edit").classList.remove("open") }
+
+function saveEditor(){
+  const title=$("#fTitle").value.trim();
+  const url=$("#fUrl").value.trim();
+  if(!title||!url) return;
+  if(editing){
+    const i=books.findIndex(x=>x.id===editing);
+    if(i>-1) books[i]={...books[i],title,url};
+  }else{
+    books.unshift({id:uid(),title,url});
+  }
+  save(LS_BOOKS, books);
+  closeEditor(); renderBooks();
+}
+function deleteEditor(){
+  if(!editing) return;
+  books=books.filter(x=>x.id!==editing);
+  save(LS_BOOKS, books);
+  closeEditor(); renderBooks();
+}
+
+function initSearch(){
+  const form=$("#searchForm"), q=$("#q");
+  document.addEventListener("keydown",(e)=>{ if(e.key==="/"){ e.preventDefault(); q.focus() }});
+  form.addEventListener("submit",(e)=>{
+    e.preventDefault();
+    const txt=q.value.trim();
+    if(!txt) return;
+    const url="https://www.google.com/search?q="+encodeURIComponent(txt);
+    window.location.href=url;
+  });
+}
+
+function initUI(){
+  $("#btnSettings").onclick=()=>$("#settings").classList.add("open");
+  $("#closeSettings").onclick=()=>$("#settings").classList.remove("open");
+  $("#settings").addEventListener("click",e=>{if(e.target.id==="settings")$("#settings").classList.remove("open")});
+
+  $("#btnAdd").onclick=()=>openEditor(null);
+  $("#cancelBook").onclick=closeEditor;
+  $("#saveBook").onclick=saveEditor;
+  $("#deleteBook").onclick=deleteEditor;
+  $("#edit").addEventListener("click",e=>{if(e.target.id==="edit")closeEditor()});
+
+  $("#year").textContent=(new Date()).getFullYear();
+}
+
+function init(){
+  initTheme();
+  initSearch();
+  renderBooks();
+  initUI();
+}
+init();
+</script>
+</body>
+</html>
