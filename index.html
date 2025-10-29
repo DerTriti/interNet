@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="auto" data-style="rounded">
+<html lang="en" data-theme="auto" data-style="rounded" data-ls="off">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -69,6 +69,7 @@ body{
   font-size:1.06rem;
   box-shadow:var(--shadow);
 }
+html[data-ls="on"] .input{ padding:22px 22px; font-size:1.2rem }
 .input:focus-visible{outline:var(--focus)}
 .btn{
   all:unset;
@@ -86,11 +87,7 @@ body{
 .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;border:1px solid var(--border);padding:2px 8px;border-radius:8px}
 
 /* suggestions (recent queries) */
-.suggest{
-  width:100%;
-  max-width:min(760px,92vw);
-  margin-top:8px;
-}
+.suggest{ width:100%; max-width:min(760px,92vw); margin-top:8px }
 .suggest-list{
   margin:0;padding:6px;
   list-style:none;
@@ -99,11 +96,7 @@ body{
   border-radius:12px;
   box-shadow:var(--shadow);
 }
-.suggest-item{
-  padding:8px 10px;
-  border-radius:8px;
-  cursor:pointer;
-}
+.suggest-item{ padding:8px 10px; border-radius:8px; cursor:pointer }
 .suggest-item:hover{background:rgba(0,0,0,.05)}
 html[data-theme="dark"] .suggest-item:hover{background:rgba(255,255,255,.08)}
 
@@ -128,21 +121,22 @@ html[data-theme="dark"] .suggest-item:hover{background:rgba(255,255,255,.08)}
 .sidebar.open{transform:translateX(0)}
 .side-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);font-weight:800}
 .side-body{padding:14px 16px;display:flex;flex-direction:column;gap:14px}
+.group{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.group-title{padding:10px 12px;font-weight:700;border-bottom:1px solid var(--border);background:var(--surface)}
+.group-body{padding:10px 12px;display:flex;flex-direction:column;gap:12px}
 .row{display:flex;gap:10px;align-items:center;justify-content:space-between}
 .label{color:var(--muted)}
-.select,.toggle,.color{
+.select,.color{
   border:1px solid var(--border);
   background:var(--surface);
   color:var(--text);
   border-radius:12px;
   padding:10px 12px;
 }
-.toggle{width:54px;height:36px;display:inline-flex;align-items:center;justify-content:center}
 .color{height:40px;width:64px;padding:4px}
-.footer{
-  position:fixed;inset:auto 0 10px 0;
-  text-align:center;color:var(--muted);font-size:.9rem
-}
+.small{all:unset;border:1px solid var(--border);padding:8px 12px;border-radius:10px;cursor:pointer;background:var(--surface)}
+.small:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+.footer{ position:fixed; inset:auto 0 10px 0; text-align:center; color:var(--muted); font-size:.9rem }
 .hidden{display:none}
 </style>
 </head>
@@ -173,55 +167,83 @@ html[data-theme="dark"] .suggest-item:hover{background:rgba(255,255,255,.08)}
       <button id="btnClose" class="icon-btn" aria-label="Close settings">✕</button>
     </div>
     <div class="side-body">
-      <div class="row">
-        <span class="label">Theme</span>
-        <select id="themeSel" class="select">
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-          <option value="auto" selected>Auto (system)</option>
-        </select>
+
+      <div class="group">
+        <div class="group-title">Appearance</div>
+        <div class="group-body">
+          <div class="row">
+            <span class="label">Theme</span>
+            <select id="themeSel" class="select">
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+              <option value="auto" selected>Auto (system)</option>
+            </select>
+          </div>
+          <div class="row">
+            <span class="label">Background</span>
+            <input id="bgColor" type="color" class="color" value="#fafafa" />
+          </div>
+          <div class="row">
+            <span class="label">Search bar</span>
+            <select id="styleSel" class="select">
+              <option value="rounded" selected>Rounded</option>
+              <option value="flat">Flat</option>
+            </select>
+          </div>
+        </div>
       </div>
 
-      <div class="row">
-        <span class="label">Search engine</span>
-        <select id="engineSel" class="select">
-          <option value="google">Google</option>
-          <option value="duck">DuckDuckGo</option>
-          <option value="bing">Bing</option>
-          <option value="youtube">YouTube</option>
-        </select>
+      <div class="group">
+        <div class="group-title">Search</div>
+        <div class="group-body">
+          <div class="row">
+            <span class="label">Engine</span>
+            <select id="engineSel" class="select">
+              <option value="google">Google</option>
+              <option value="duck">DuckDuckGo</option>
+              <option value="bing">Bing</option>
+              <option value="youtube">YouTube</option>
+            </select>
+          </div>
+          <div class="row">
+            <span class="label">Open results</span>
+            <select id="targetSel" class="select">
+              <option value="_self">Same tab</option>
+              <option value="_blank" selected>New tab</option>
+            </select>
+          </div>
+          <div class="row">
+            <span class="label">Suggestions</span>
+            <select id="suggestSel" class="select">
+              <option value="on" selected>On (recent)</option>
+              <option value="off">Off</option>
+            </select>
+          </div>
+        </div>
       </div>
 
-      <div class="row">
-        <span class="label">Open results</span>
-        <select id="targetSel" class="select">
-          <option value="_self">Same tab</option>
-          <option value="_blank" selected>New tab</option>
-        </select>
+      <div class="group">
+        <div class="group-title">Advanced</div>
+        <div class="group-body">
+          <div class="row">
+            <span class="label">Large Search Mode</span>
+            <select id="largeSel" class="select">
+              <option value="off" selected>Off</option>
+              <option value="on">On</option>
+            </select>
+          </div>
+
+          <div class="row" style="gap:8px;justify-content:flex-start">
+            <button id="btnBackup" class="small" type="button">Backup Settings (.ernet)</button>
+            <button id="btnRestore" class="small" type="button">Restore Settings (.ernet)</button>
+            <button id="btnReset" class="small" type="button">Reset Settings</button>
+          </div>
+          <input id="fileRestore" type="file" accept=".ernet,application/octet-stream,application/json" class="hidden" />
+          <div class="helper">Backup/Restore works fully offline. File extension: .ernet</div>
+        </div>
       </div>
 
-      <div class="row">
-        <span class="label">Background</span>
-        <input id="bgColor" type="color" class="color" value="#fafafa" />
-      </div>
-
-      <div class="row">
-        <span class="label">Search bar</span>
-        <select id="styleSel" class="select">
-          <option value="rounded" selected>Rounded</option>
-          <option value="flat">Flat</option>
-        </select>
-      </div>
-
-      <div class="row">
-        <span class="label">Suggestions</span>
-        <select id="suggestSel" class="select">
-          <option value="on" selected>On (recent)</option>
-          <option value="off">Off</option>
-        </select>
-      </div>
-
-      <div class="helper" style="margin-top:4px">Press <span class="kbd">/</span> to focus search · <span class="kbd">Esc</span> to close settings</div>
+      <div class="helper">Press <span class="kbd">/</span> to focus search · <span class="kbd">Esc</span> to close settings</div>
     </div>
   </aside>
 
@@ -229,7 +251,7 @@ html[data-theme="dark"] .suggest-item:hover{background:rgba(255,255,255,.08)}
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 const LS_THEME="sp_min_theme", LS_ENGINE="sp_min_engine", LS_TARGET="sp_min_target",
       LS_BGCOLOR="sp_min_bg", LS_STYLE="sp_min_style", LS_SUG="sp_min_suggest",
-      LS_RECENTS="sp_min_recents";
+      LS_RECENTS="sp_min_recents", LS_LARGE="sp_min_large";
 
 function applyTheme(mode){
   if(mode==="auto"){
@@ -240,9 +262,9 @@ function applyTheme(mode){
   }
 }
 function applyBgColor(hex){ document.documentElement.style.setProperty("--bg", hex); }
-function applyStyle(v){
-  document.documentElement.setAttribute("data-style", v==="flat"?"flat":"rounded");
-}
+function applyStyle(v){ document.documentElement.setAttribute("data-style", v==="flat"?"flat":"rounded"); }
+function applyLarge(v){ document.documentElement.setAttribute("data-ls", v==="on"?"on":"off"); }
+
 function engineToURL(engine,q){
   if(engine==="duck") return "https://duckduckgo.com/?q="+encodeURIComponent(q);
   if(engine==="bing") return "https://www.bing.com/search?q="+encodeURIComponent(q);
@@ -259,6 +281,7 @@ function pushRecent(q){
   if(arr.length>8) arr.length=8;
   save(LS_RECENTS,arr);
 }
+
 function renderSuggest(){
   const mode=(localStorage.getItem(LS_SUG)||"on");
   const wrap=$("#suggestWrap"), list=$("#suggestList");
@@ -298,6 +321,7 @@ function submitSearch(){
   if(target==="_self") window.location.href=url; else window.open(url,"_blank","noopener");
 }
 
+/* ------- Settings init & bindings ------- */
 function initSettings(){
   const theme=localStorage.getItem(LS_THEME)||"auto";
   const engine=localStorage.getItem(LS_ENGINE)||"google";
@@ -305,6 +329,7 @@ function initSettings(){
   const bg=localStorage.getItem(LS_BGCOLOR)||"#fafafa";
   const style=localStorage.getItem(LS_STYLE)||"rounded";
   const sug=localStorage.getItem(LS_SUG)||"on";
+  const large=localStorage.getItem(LS_LARGE)||"off";
 
   $("#themeSel").value=theme; applyTheme(theme);
   $("#engineSel").value=engine;
@@ -312,19 +337,104 @@ function initSettings(){
   $("#bgColor").value=bg; applyBgColor(bg);
   $("#styleSel").value=style; applyStyle(style);
   $("#suggestSel").value=sug;
+  $("#largeSel").value=large; applyLarge(large);
 
   $("#themeSel").addEventListener("change",e=>{ localStorage.setItem(LS_THEME,e.target.value); applyTheme(e.target.value); });
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{
     if(($("#themeSel").value||"auto")==="auto") applyTheme("auto");
   });
-
   $("#engineSel").addEventListener("change",e=>localStorage.setItem(LS_ENGINE,e.target.value));
   $("#targetSel").addEventListener("change",e=>localStorage.setItem(LS_TARGET,e.target.value));
   $("#bgColor").addEventListener("input",e=>{ localStorage.setItem(LS_BGCOLOR,e.target.value); applyBgColor(e.target.value); });
   $("#styleSel").addEventListener("change",e=>{ localStorage.setItem(LS_STYLE,e.target.value); applyStyle(e.target.value); });
   $("#suggestSel").addEventListener("change",e=>{ localStorage.setItem(LS_SUG,e.target.value); renderSuggest(); });
+  $("#largeSel").addEventListener("change",e=>{ localStorage.setItem(LS_LARGE,e.target.value); applyLarge(e.target.value); });
+
+  $("#btnBackup").onclick=backupSettings;
+  $("#btnRestore").onclick=()=>$("#fileRestore").click();
+  $("#fileRestore").addEventListener("change",restoreSettings);
+  $("#btnReset").onclick=resetSettings;
 }
 
+/* ------- Backup / Restore (.ernet) ------- */
+function collectSettings(){
+  return {
+    theme: localStorage.getItem(LS_THEME)||"auto",
+    engine: localStorage.getItem(LS_ENGINE)||"google",
+    target: localStorage.getItem(LS_TARGET)||"_blank",
+    bg: localStorage.getItem(LS_BGCOLOR)||"#fafafa",
+    style: localStorage.getItem(LS_STYLE)||"rounded",
+    suggestions: localStorage.getItem(LS_SUG)||"on",
+    largeSearch: localStorage.getItem(LS_LARGE)||"off",
+    version: 1
+  };
+}
+function applySettings(obj){
+  const theme=obj.theme||"auto";
+  const engine=obj.engine||"google";
+  const target=obj.target||"_blank";
+  const bg=obj.bg||"#fafafa";
+  const style=obj.style||"rounded";
+  const suggestions=obj.suggestions||"on";
+  const large=obj.largeSearch||"off";
+
+  localStorage.setItem(LS_THEME,theme);
+  localStorage.setItem(LS_ENGINE,engine);
+  localStorage.setItem(LS_TARGET,target);
+  localStorage.setItem(LS_BGCOLOR,bg);
+  localStorage.setItem(LS_STYLE,style);
+  localStorage.setItem(LS_SUG,suggestions);
+  localStorage.setItem(LS_LARGE,large);
+
+  $("#themeSel").value=theme; applyTheme(theme);
+  $("#engineSel").value=engine;
+  $("#targetSel").value=target;
+  $("#bgColor").value=bg; applyBgColor(bg);
+  $("#styleSel").value=style; applyStyle(style);
+  $("#suggestSel").value=suggestions; renderSuggest();
+  $("#largeSel").value=large; applyLarge(large);
+}
+function backupSettings(){
+  const data=collectSettings();
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/octet-stream"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  const ts=new Date().toISOString().replace(/[:.]/g,"-");
+  a.href=url; a.download=`settings_${ts}.ernet`;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url);a.remove()},0);
+}
+function restoreSettings(e){
+  const f=e.target.files[0];
+  if(!f){ e.target.value=""; return; }
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const obj=JSON.parse(r.result);
+      applySettings(obj);
+    }catch{
+      alert("Invalid .ernet file");
+    }
+    e.target.value="";
+  };
+  r.readAsText(f);
+}
+
+/* ------- Reset ------- */
+function resetSettings(){
+  if(!confirm("Reset all settings to default?")) return;
+  localStorage.setItem(LS_THEME,"auto");
+  localStorage.setItem(LS_ENGINE,"google");
+  localStorage.setItem(LS_TARGET,"_blank");
+  localStorage.setItem(LS_BGCOLOR,"#fafafa");
+  localStorage.setItem(LS_STYLE,"rounded");
+  localStorage.setItem(LS_SUG,"on");
+  localStorage.setItem(LS_LARGE,"off");
+  applySettings(collectSettings());
+}
+
+/* ------- UI & Search ------- */
 function initUI(){
   $("#year").textContent=(new Date()).getFullYear();
 
