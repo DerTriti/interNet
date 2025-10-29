@@ -1,291 +1,352 @@
 <!DOCTYPE html>
-<html lang="it" data-theme="auto">
+<html lang="en" data-theme="auto" data-style="rounded">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Startpage — Material</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="color-scheme" content="light dark" />
+<title>Start — Minimal Search</title>
 <style>
 :root{
   --bg:#fafafa;
   --surface:#ffffff;
-  --text:#1f2937;
-  --text-weak:#6b7280;
-  --primary:#2563eb;
-  --primary-weak:#dbeafe;
+  --text:#111827;
+  --muted:#6b7280;
   --border:#e5e7eb;
-  --radius:16px;
-  --shadow:0 8px 20px rgba(0,0,0,.08);
-  --shadow-strong:0 16px 36px rgba(0,0,0,.12);
+  --primary:#2563eb;
   --focus:2px solid #2563eb;
-  --card-gap:16px;
-  --container:1080px
+  --radius-input:999px;
+  --shadow:0 12px 32px rgba(0,0,0,.10);
 }
 html[data-theme="dark"]{
   --bg:#0b0f19;
   --surface:#111827;
   --text:#e5e7eb;
-  --text-weak:#9ca3af;
-  --primary:#60a5fa;
-  --primary-weak:#1e293b;
+  --muted:#9ca3af;
   --border:#1f2937;
-  --shadow:0 10px 30px rgba(0,0,0,.45);
-  --shadow-strong:0 18px 48px rgba(0,0,0,.6)
+  --primary:#60a5fa;
+  --shadow:0 14px 40px rgba(0,0,0,.55);
 }
+html[data-style="flat"]{ --radius-input:12px; }
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
-  margin:0;background:var(--bg);color:var(--text);
-  font:16px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:16px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  display:grid;
+  place-items:center;
 }
-.container{max-width:var(--container);margin:0 auto;padding:24px}
-.nav{
-  position:sticky;top:0;z-index:10;
-  background:rgba(255,255,255,.7);backdrop-filter:saturate(140%) blur(10px);
-  border-bottom:1px solid var(--border)
+.container{width:min(760px,92vw);margin:auto;padding:12px}
+.center{display:flex;flex-direction:column;align-items:center;gap:18px}
+.form{
+  width:100%;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
 }
-html[data-theme="dark"] .nav{background:rgba(17,24,39,.6)}
-.nav-inner{max-width:var(--container);margin:0 auto;padding:12px 24px;display:flex;gap:12px;align-items:center;justify-content:space-between}
-.brand{font-weight:800;letter-spacing:-.02em}
-.btn{
-  all:unset;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
-  padding:10px 14px;border-radius:12px;border:1px solid var(--border);background:var(--surface);
-  transition:transform .15s ease,box-shadow .2s ease,background .2s ease
+.icon-btn{
+  all:unset;
+  cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;
+  width:44px;height:44px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  transition:transform .15s ease,box-shadow .2s ease,background .2s ease;
 }
-.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
-.btn:focus-visible{outline:var(--focus)}
-.btn-primary{border-color:transparent;background:var(--primary);color:#fff}
-.btn-primary:hover{box-shadow:var(--shadow-strong)}
-.grid{
-  display:grid;gap:24px;grid-template-columns:1fr
-}
-.card{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);
-  padding:20px;transition:transform .15s ease,box-shadow .2s ease,background .2s ease
-}
-.card:hover{transform:translateY(-1px);box-shadow:var(--shadow-strong)}
-.header{display:flex;flex-direction:column;align-items:center;gap:16px;margin:28px 0 8px}
-h1{margin:0;font-size:clamp(1.4rem,3.5vw,2rem);font-weight:800;letter-spacing:-.02em}
-.muted{color:var(--text-weak)}
-.search{
-  display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap
-}
+.icon-btn:hover{transform:translateY(-1px)}
+.icon{width:22px;height:22px;display:block}
 .input{
-  width:min(720px,100%);padding:14px 16px;border-radius:12px;border:1px solid var(--border);
-  background:var(--surface);color:var(--text);font-size:1rem
+  flex:1 1 auto;
+  padding:16px 18px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--text);
+  border-radius:var(--radius-input);
+  font-size:1.06rem;
+  box-shadow:var(--shadow);
 }
 .input:focus-visible{outline:var(--focus)}
-.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;border:1px solid var(--border);padding:2px 8px;border-radius:8px;background:var(--primary-weak)}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.section-title{font-weight:700;margin-bottom:8px}
-.book-wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--card-gap)}
-@media (max-width:1100px){.book-wrap{grid-template-columns:repeat(3,1fr)}}
-@media (max-width:760px){.book-wrap{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:460px){.book-wrap{grid-template-columns:1fr}}
-.book{
-  display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:14px;border:1px solid var(--border);
-  background:var(--surface);box-shadow:var(--shadow);transition:transform .15s ease,box-shadow .2s ease
+.btn{
+  all:unset;
+  cursor:pointer;
+  padding:12px 18px;
+  border-radius:12px;
+  background:var(--primary);
+  color:#fff;
+  font-weight:700;
+  box-shadow:var(--shadow);
+  transition:transform .15s ease,box-shadow .2s ease;
 }
-.book:hover{transform:translateY(-1px);box-shadow:var(--shadow-strong)}
-.book-title{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.book-url{font-size:.9rem;color:var(--text-weak);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.book-actions{display:flex;gap:8px;margin-top:4px}
-.small{all:unset;border:1px solid var(--border);padding:6px 10px;border-radius:10px;cursor:pointer;background:var(--surface)}
-.small:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
-.footer{margin:26px 0;color:var(--text-weak);text-align:center}
-.modal-wrap{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);z-index:50}
-.modal-wrap.open{display:grid}
-.modal{width:min(560px,92vw)} .modal .row{margin:8px 0}
-.select{padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--text)}
+.btn:hover{transform:translateY(-1px)}
+.helper{color:var(--muted);font-size:.95rem}
+.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;border:1px solid var(--border);padding:2px 8px;border-radius:8px}
+
+/* suggestions (recent queries) */
+.suggest{
+  width:100%;
+  max-width:min(760px,92vw);
+  margin-top:8px;
+}
+.suggest-list{
+  margin:0;padding:6px;
+  list-style:none;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  box-shadow:var(--shadow);
+}
+.suggest-item{
+  padding:8px 10px;
+  border-radius:8px;
+  cursor:pointer;
+}
+.suggest-item:hover{background:rgba(0,0,0,.05)}
+html[data-theme="dark"] .suggest-item:hover{background:rgba(255,255,255,.08)}
+
+/* settings sidebar (Windows 8 style) */
+.overlay{
+  position:fixed;inset:0;display:none;
+  background:rgba(0,0,0,.35);
+  backdrop-filter:blur(6px);
+  z-index:20;
+}
+.overlay.open{display:block}
+.sidebar{
+  position:fixed;inset:0 0 0 auto;
+  width:min(360px,92vw);
+  background:var(--surface);
+  border-left:1px solid var(--border);
+  transform:translateX(100%);
+  transition:transform .25s ease;
+  z-index:30;
+  display:flex;flex-direction:column;
+}
+.sidebar.open{transform:translateX(0)}
+.side-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);font-weight:800}
+.side-body{padding:14px 16px;display:flex;flex-direction:column;gap:14px}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.label{color:var(--muted)}
+.select,.toggle,.color{
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--text);
+  border-radius:12px;
+  padding:10px 12px;
+}
+.toggle{width:54px;height:36px;display:inline-flex;align-items:center;justify-content:center}
+.color{height:40px;width:64px;padding:4px}
+.footer{
+  position:fixed;inset:auto 0 10px 0;
+  text-align:center;color:var(--muted);font-size:.9rem
+}
+.hidden{display:none}
 </style>
 </head>
 <body>
-  <div class="nav">
-    <div class="nav-inner">
-      <div class="brand">Startpage</div>
-      <div class="row">
-        <button class="btn" id="btnSettings">Settings</button>
-        <button class="btn btn-primary" id="btnAdd">Add bookmark</button>
-      </div>
+  <main class="container center">
+    <form id="searchForm" class="form" role="search" autocomplete="off" aria-label="Search">
+      <button id="btnSettings" type="button" class="icon-btn" aria-label="Settings">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/>
+          <path d="M19.4 15a1.9 1.9 0 0 0 .38 2.09l.04.04a2 2 0 0 1-2.83 2.83l-.04-.04A1.9 1.9 0 0 0 15 19.4a1.9 1.9 0 0 0-1.5.73l-.02.03a2 2 0 0 1-3 0l-.02-.03A1.9 1.9 0 0 0 9 19.4a1.9 1.9 0 0 0-2.09-.38l-.04.04a2 2 0 0 1-2.83-2.83l.04-.04A1.9 1.9 0 0 0 4.6 15a1.9 1.9 0 0 0-.73-1.5l-.03-.02a2 2 0 0 1 0-3l.03-.02A1.9 1.9 0 0 0 4.6 9a1.9 1.9 0 0 0-.38-2.09l-.04-.04a2 2 0 1 1 2.83-2.83l.04.04A1.9 1.9 0 0 0 9 4.6c.57 0 1.1-.23 1.5-.73l.02-.03a2 2 0 0 1 3 0l.02.03c.4.5.93.73 1.5.73a1.9 1.9 0 0 0 2.09-.38l.04-.04a2 2 0 1 1 2.83 2.83l-.04.04c-.5.4-.73.93-.73 1.5s.23 1.1.73 1.5l.03.02a2 2 0 0 1 0 3l-.03.02c-.5.4-.73.93-.73 1.5Z"/>
+        </svg>
+      </button>
+      <input id="q" class="input" type="search" placeholder="Search…" aria-label="Search" />
+      <button class="btn" type="submit">Search</button>
+    </form>
+
+    <div id="suggestWrap" class="suggest hidden" aria-live="polite">
+      <ul id="suggestList" class="suggest-list"></ul>
     </div>
-  </div>
+  </main>
 
-  <div class="container">
-    <header class="header">
-      <h1>Benvenuto</h1>
-      <div class="muted">Premi <span class="kbd">/</span> per cercare</div>
-      <form class="search" id="searchForm">
-        <input id="q" class="input" autocomplete="off" placeholder="Cerca su Google…" aria-label="Search on Google">
-        <button class="btn btn-primary" type="submit">Search</button>
-      </form>
-    </header>
+  <div class="footer">© <span id="year"></span> Start — Minimal</div>
 
-    <section class="card">
-      <div class="section-title">Bookmarks</div>
-      <div id="books" class="book-wrap"></div>
-    </section>
-
-    <div class="footer">© <span id="year"></span> Startpage — Material</div>
-  </div>
-
-  <div class="modal-wrap" id="settings">
-    <div class="modal card">
-      <div class="section-title">Settings</div>
+  <div id="overlay" class="overlay" aria-hidden="true"></div>
+  <aside id="sidebar" class="sidebar" aria-hidden="true">
+    <div class="side-head">
+      <div>Settings</div>
+      <button id="btnClose" class="icon-btn" aria-label="Close settings">✕</button>
+    </div>
+    <div class="side-body">
       <div class="row">
-        <label>Theme</label>
+        <span class="label">Theme</span>
         <select id="themeSel" class="select">
           <option value="light">Light</option>
           <option value="dark">Dark</option>
           <option value="auto" selected>Auto (system)</option>
         </select>
-        <button class="btn" id="closeSettings">Close</button>
       </div>
-      <div class="muted">Il tema viene salvato nel browser.</div>
-    </div>
-  </div>
 
-  <div class="modal-wrap" id="edit">
-    <div class="modal card">
-      <div class="section-title" id="editTitle">Add bookmark</div>
       <div class="row">
-        <input id="fTitle" class="input" placeholder="Titolo">
+        <span class="label">Search engine</span>
+        <select id="engineSel" class="select">
+          <option value="google">Google</option>
+          <option value="duck">DuckDuckGo</option>
+          <option value="bing">Bing</option>
+          <option value="youtube">YouTube</option>
+        </select>
       </div>
+
       <div class="row">
-        <input id="fUrl" class="input" placeholder="https://...">
+        <span class="label">Open results</span>
+        <select id="targetSel" class="select">
+          <option value="_self">Same tab</option>
+          <option value="_blank" selected>New tab</option>
+        </select>
       </div>
+
       <div class="row">
-        <button class="btn btn-primary" id="saveBook">Save</button>
-        <button class="btn" id="cancelBook">Cancel</button>
-        <button class="btn" id="deleteBook" style="margin-left:auto;display:none">Delete</button>
+        <span class="label">Background</span>
+        <input id="bgColor" type="color" class="color" value="#fafafa" />
       </div>
+
+      <div class="row">
+        <span class="label">Search bar</span>
+        <select id="styleSel" class="select">
+          <option value="rounded" selected>Rounded</option>
+          <option value="flat">Flat</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <span class="label">Suggestions</span>
+        <select id="suggestSel" class="select">
+          <option value="on" selected>On (recent)</option>
+          <option value="off">Off</option>
+        </select>
+      </div>
+
+      <div class="helper" style="margin-top:4px">Press <span class="kbd">/</span> to focus search · <span class="kbd">Esc</span> to close settings</div>
     </div>
-  </div>
+  </aside>
 
 <script>
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
-const LS_BOOKS="sp_books_v1", LS_THEME="sp_theme";
-let books = load(LS_BOOKS, []) || [];
-let editing=null;
+const LS_THEME="sp_min_theme", LS_ENGINE="sp_min_engine", LS_TARGET="sp_min_target",
+      LS_BGCOLOR="sp_min_bg", LS_STYLE="sp_min_style", LS_SUG="sp_min_suggest",
+      LS_RECENTS="sp_min_recents";
 
+function applyTheme(mode){
+  if(mode==="auto"){
+    const dark=matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", dark?"dark":"light");
+  }else{
+    document.documentElement.setAttribute("data-theme", mode);
+  }
+}
+function applyBgColor(hex){ document.documentElement.style.setProperty("--bg", hex); }
+function applyStyle(v){
+  document.documentElement.setAttribute("data-style", v==="flat"?"flat":"rounded");
+}
+function engineToURL(engine,q){
+  if(engine==="duck") return "https://duckduckgo.com/?q="+encodeURIComponent(q);
+  if(engine==="bing") return "https://www.bing.com/search?q="+encodeURIComponent(q);
+  if(engine==="youtube") return "https://www.youtube.com/results?search_query="+encodeURIComponent(q);
+  return "https://www.google.com/search?q="+encodeURIComponent(q);
+}
 function load(k,def){try{const v=JSON.parse(localStorage.getItem(k));return v??def}catch{return def}}
 function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
-function uid(){return Math.random().toString(36).slice(2,10)}
-
-function applyTheme(t){
-  const root=document.documentElement;
-  if(t==="auto"){
-    const isDark=window.matchMedia("(prefers-color-scheme: dark)").matches;
-    root.setAttribute("data-theme", isDark?"dark":"light");
-  }else{
-    root.setAttribute("data-theme", t);
-  }
+function pushRecent(q){
+  let arr=load(LS_RECENTS,[]);
+  q=q.trim(); if(!q) return;
+  arr=arr.filter(x=>x.toLowerCase()!==q.toLowerCase());
+  arr.unshift(q);
+  if(arr.length>8) arr.length=8;
+  save(LS_RECENTS,arr);
 }
-function initTheme(){
-  const saved=localStorage.getItem(LS_THEME) || "auto";
-  $("#themeSel").value=saved;
-  applyTheme(saved);
-  $("#themeSel").addEventListener("change",()=>{
-    const v=$("#themeSel").value;
-    localStorage.setItem(LS_THEME, v);
-    applyTheme(v);
+function renderSuggest(){
+  const mode=(localStorage.getItem(LS_SUG)||"on");
+  const wrap=$("#suggestWrap"), list=$("#suggestList");
+  if(mode!=="on"){ wrap.classList.add("hidden"); return; }
+  const q=$("#q").value.trim();
+  const all=load(LS_RECENTS,[]);
+  const items=q? all.filter(x=>x.toLowerCase().includes(q.toLowerCase())) : all;
+  if(!items.length){ wrap.classList.add("hidden"); return; }
+  list.innerHTML="";
+  items.forEach(txt=>{
+    const li=document.createElement("li");
+    li.className="suggest-item";
+    li.textContent=txt;
+    li.onclick=()=>{ $("#q").value=txt; submitSearch(); };
+    list.appendChild(li);
   });
-  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{
+  wrap.classList.remove("hidden");
+}
+function hideSuggest(){ $("#suggestWrap").classList.add("hidden"); }
+
+function openSidebar(){
+  $("#overlay").classList.add("open"); $("#overlay").setAttribute("aria-hidden","false");
+  $("#sidebar").classList.add("open"); $("#sidebar").setAttribute("aria-hidden","false");
+}
+function closeSidebar(){
+  $("#overlay").classList.remove("open"); $("#overlay").setAttribute("aria-hidden","true");
+  $("#sidebar").classList.remove("open"); $("#sidebar").setAttribute("aria-hidden","true");
+}
+
+function submitSearch(){
+  const q=$("#q").value.trim(); if(!q) return;
+  pushRecent(q);
+  const engine=localStorage.getItem(LS_ENGINE)||"google";
+  const url=engineToURL(engine,q);
+  const target=localStorage.getItem(LS_TARGET) || "_blank";
+  hideSuggest();
+  if(target==="_self") window.location.href=url; else window.open(url,"_blank","noopener");
+}
+
+function initSettings(){
+  const theme=localStorage.getItem(LS_THEME)||"auto";
+  const engine=localStorage.getItem(LS_ENGINE)||"google";
+  const target=localStorage.getItem(LS_TARGET)||"_blank";
+  const bg=localStorage.getItem(LS_BGCOLOR)||"#fafafa";
+  const style=localStorage.getItem(LS_STYLE)||"rounded";
+  const sug=localStorage.getItem(LS_SUG)||"on";
+
+  $("#themeSel").value=theme; applyTheme(theme);
+  $("#engineSel").value=engine;
+  $("#targetSel").value=target;
+  $("#bgColor").value=bg; applyBgColor(bg);
+  $("#styleSel").value=style; applyStyle(style);
+  $("#suggestSel").value=sug;
+
+  $("#themeSel").addEventListener("change",e=>{ localStorage.setItem(LS_THEME,e.target.value); applyTheme(e.target.value); });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{
     if(($("#themeSel").value||"auto")==="auto") applyTheme("auto");
   });
-}
 
-function renderBooks(){
-  const wrap=$("#books");
-  wrap.innerHTML="";
-  if(!books.length){
-    books=[ // default demo
-      {id:uid(),title:"Google",url:"https://www.google.com"},
-      {id:uid(),title:"YouTube",url:"https://www.youtube.com"},
-      {id:uid(),title:"Gmail",url:"https://mail.google.com"},
-      {id:uid(),title:"GitHub",url:"https://github.com"},
-      {id:uid(),title:"Wikipedia",url:"https://www.wikipedia.org"}
-    ];
-    save(LS_BOOKS, books);
-  }
-  for(const b of books){
-    const el=document.createElement("div");
-    el.className="book";
-    const t=document.createElement("div"); t.className="book-title"; t.textContent=b.title;
-    const u=document.createElement("div"); u.className="book-url"; u.textContent=b.url;
-    const actions=document.createElement("div"); actions.className="book-actions";
-    const open=document.createElement("button"); open.className="small"; open.textContent="Open";
-    open.onclick=()=>window.open(b.url,"_blank","noopener");
-    const edit=document.createElement("button"); edit.className="small"; edit.textContent="Edit";
-    edit.onclick=()=>openEditor(b.id);
-    actions.append(open,edit);
-    el.append(t,u,actions);
-    wrap.appendChild(el);
-  }
-}
-
-function openEditor(id){
-  editing=id||null;
-  $("#editTitle").textContent = editing ? "Edit bookmark" : "Add bookmark";
-  $("#deleteBook").style.display = editing ? "" : "none";
-  if(editing){
-    const b=books.find(x=>x.id===editing);
-    $("#fTitle").value=b.title; $("#fUrl").value=b.url;
-  }else{
-    $("#fTitle").value=""; $("#fUrl").value="";
-  }
-  $("#edit").classList.add("open");
-}
-function closeEditor(){ $("#edit").classList.remove("open") }
-
-function saveEditor(){
-  const title=$("#fTitle").value.trim();
-  const url=$("#fUrl").value.trim();
-  if(!title||!url) return;
-  if(editing){
-    const i=books.findIndex(x=>x.id===editing);
-    if(i>-1) books[i]={...books[i],title,url};
-  }else{
-    books.unshift({id:uid(),title,url});
-  }
-  save(LS_BOOKS, books);
-  closeEditor(); renderBooks();
-}
-function deleteEditor(){
-  if(!editing) return;
-  books=books.filter(x=>x.id!==editing);
-  save(LS_BOOKS, books);
-  closeEditor(); renderBooks();
-}
-
-function initSearch(){
-  const form=$("#searchForm"), q=$("#q");
-  document.addEventListener("keydown",(e)=>{ if(e.key==="/"){ e.preventDefault(); q.focus() }});
-  form.addEventListener("submit",(e)=>{
-    e.preventDefault();
-    const txt=q.value.trim();
-    if(!txt) return;
-    const url="https://www.google.com/search?q="+encodeURIComponent(txt);
-    window.location.href=url;
-  });
+  $("#engineSel").addEventListener("change",e=>localStorage.setItem(LS_ENGINE,e.target.value));
+  $("#targetSel").addEventListener("change",e=>localStorage.setItem(LS_TARGET,e.target.value));
+  $("#bgColor").addEventListener("input",e=>{ localStorage.setItem(LS_BGCOLOR,e.target.value); applyBgColor(e.target.value); });
+  $("#styleSel").addEventListener("change",e=>{ localStorage.setItem(LS_STYLE,e.target.value); applyStyle(e.target.value); });
+  $("#suggestSel").addEventListener("change",e=>{ localStorage.setItem(LS_SUG,e.target.value); renderSuggest(); });
 }
 
 function initUI(){
-  $("#btnSettings").onclick=()=>$("#settings").classList.add("open");
-  $("#closeSettings").onclick=()=>$("#settings").classList.remove("open");
-  $("#settings").addEventListener("click",e=>{if(e.target.id==="settings")$("#settings").classList.remove("open")});
-
-  $("#btnAdd").onclick=()=>openEditor(null);
-  $("#cancelBook").onclick=closeEditor;
-  $("#saveBook").onclick=saveEditor;
-  $("#deleteBook").onclick=deleteEditor;
-  $("#edit").addEventListener("click",e=>{if(e.target.id==="edit")closeEditor()});
-
   $("#year").textContent=(new Date()).getFullYear();
+
+  $("#btnSettings").onclick=openSidebar;
+  $("#btnClose").onclick=closeSidebar;
+  $("#overlay").onclick=closeSidebar;
+  document.addEventListener("keydown",e=>{
+    if(e.key==="Escape") closeSidebar();
+    if(e.key==="/"){ e.preventDefault(); $("#q").focus(); }
+  });
+
+  $("#q").addEventListener("input",renderSuggest);
+  $("#q").addEventListener("focus",renderSuggest);
+  document.addEventListener("click",e=>{
+    if(!e.composedPath().includes($("#suggestWrap")) && e.target!==$("#q")) hideSuggest();
+  });
+
+  $("#searchForm").addEventListener("submit",(e)=>{ e.preventDefault(); submitSearch(); });
 }
 
 function init(){
-  initTheme();
-  initSearch();
-  renderBooks();
+  initSettings();
   initUI();
 }
 init();
